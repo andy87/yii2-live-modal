@@ -35,11 +35,11 @@ abstract class LiveModal extends LiveModalRoot
      * @param string $requestId
      * @param string $endpoint
      */
-    public function __construct( string $requestId, string $endpoint )
+    public function __construct( ?string $requestId = null, ?string $endpoint = null )
     {
-        $this->requestId = $requestId;
+        if ( $requestId ) $this->requestId = $requestId;
 
-        $this->endpoint = $endpoint;
+        if ( $endpoint ) $this->endpoint = $endpoint;
 
         $this->jsLibrary = LiveModalAsset::PARAM_JS_LIBRARY;
     }
@@ -89,7 +89,7 @@ abstract class LiveModal extends LiveModalRoot
      *
      * @return static
      */
-    public static function getInstance(array $params, array $options = [] ): static
+    public static function getInstance(array $params = [], array $options = [] ): static
     {
         $className = static::class;
 
