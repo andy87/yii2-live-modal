@@ -2,15 +2,16 @@
 
 namespace andy87\yii2\live_modal\base;
 
-use andy87\yii2\live_modal\assets\LiveModalAsset;
+use yii\base\Model;
 use andy87\yii2\live_modal\traits\RootTrait;
+use andy87\yii2\live_modal\assets\LiveModalAsset;
 
 /**
  * Class LiveModalRoot
  *
  * @package yii2\frontend\components\liveModal\base
  */
-class LiveModalRoot
+class LiveModalRoot extends Model
 {
     use RootTrait;
 
