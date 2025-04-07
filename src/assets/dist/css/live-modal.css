@@ -1,0 +1,7 @@
+.locading {
+    display: block;
+    margin: 32px auto;
+    width: 64px;
+    height: 64px;
+    background: url("../img/spinning-dots.svg");
+}
