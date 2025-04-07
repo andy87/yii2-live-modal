@@ -17,23 +17,22 @@
     }
   ],
   "require": {
-    "php": ">=8.0",
+    "php": ">=8.0"
   },
 
   "require-dev": {
-    "yiisoft/yii2": "~2.0.45",
+    "yiisoft/yii2": "~2.0.45"
   },
 
   "autoload": {
     "psr-4": {
       "andy87\\yii2\\live_modal\\": "src/"
-
     }
   },
 
   "autoload-dev": {
     "psr-4": {
-      "andy87\\yii2\\live_modal\\": "src/",
+      "andy87\\yii2\\live_modal\\": "src/"
     }
   },
 
