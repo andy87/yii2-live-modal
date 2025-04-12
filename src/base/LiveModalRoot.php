@@ -17,7 +17,7 @@ class LiveModalRoot extends Model
 
     protected string $endpoint;
 
-    protected string $containerId;
+    protected ?string $containerId = null;
 
     protected string $containerTemplate = LiveModal::TEMPLATE_CONTAINER;
 
