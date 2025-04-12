@@ -19,6 +19,10 @@ abstract class LiveModal extends LiveModalRoot
     protected const PARAM_CONTAINER_ID = 'liveModalCommonContainerId';
     protected const PARAMS_CONTAINER_TEMPLATE = 'liveModalCommonContainerTemplate';
 
+    public const TEMPLATE_CONTAINER = '@vendor/andy87/yii2-live-modal/src/views/liveModalViewContainer.php';
+
+
+
     /** @var string */
     protected const BUTTON_OPTIONS = [
         'class' => 'btn btn-success btn-sm',
@@ -35,13 +39,15 @@ abstract class LiveModal extends LiveModalRoot
      * @param string $requestId
      * @param string $endpoint
      */
-    public function __construct( ?string $requestId = null, ?string $endpoint = null )
+    public function __construct( ?string $requestId = null, ?string $endpoint = null, array $config = [] )
     {
         if ( $requestId ) $this->requestId = $requestId;
 
         if ( $endpoint ) $this->endpoint = $endpoint;
 
         $this->jsLibrary = LiveModalAsset::PARAM_JS_LIBRARY;
+
+        parent::__construct($config);
     }
 
 

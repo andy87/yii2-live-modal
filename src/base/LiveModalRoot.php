@@ -19,7 +19,7 @@ class LiveModalRoot extends Model
 
     protected string $containerId;
 
-    protected string $containerTemplate;
+    protected string $containerTemplate = LiveModal::TEMPLATE_CONTAINER;
 
     protected string $jsLibrary = LiveModalAsset::PARAM_JS_LIBRARY;
 }
