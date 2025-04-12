@@ -15,6 +15,8 @@ use andy87\yii2\live_modal\service\LiveModalService;
  */
 abstract class LiveModal extends LiveModalRoot
 {
+    protected const URL_REQUEST_KEY = 'request_id';
+
     /** @var string куда вставить контент */
     public const PARAM_CONTAINER_ID = 'liveModalCommonContainerId';
     public const PARAMS_CONTAINER_TEMPLATE = 'liveModalCommonContainerTemplate';
@@ -37,8 +39,9 @@ abstract class LiveModal extends LiveModalRoot
 
 
     /**
-     * @param string $requestId
-     * @param string $endpoint
+     * @param ?string $requestId
+     * @param ?string $endpoint
+     * @param array $config
      */
     public function __construct( ?string $requestId = null, ?string $endpoint = null, array $config = [] )
     {
@@ -47,6 +50,10 @@ abstract class LiveModal extends LiveModalRoot
         if ( $endpoint ) $this->endpoint = $endpoint;
 
         $this->jsLibrary = LiveModalAsset::PARAM_JS_LIBRARY;
+
+        if (!$this->containerId) {
+            $this->containerId = Yii::$app->params[static::PARAM_CONTAINER_ID];
+        }
 
         parent::__construct($config);
     }
@@ -69,7 +76,7 @@ abstract class LiveModal extends LiveModalRoot
 
         $libraryData = LiveModalService::constructLibraryData( $endpoint, $containerId, [ 'request_id' => $requestId ]);
 
-        $libraryData['request_id'] = $requestId;
+        $libraryData[static::URL_REQUEST_KEY] = $requestId;
 
         return LiveModalService::displayButton( $requestId, $libraryData, $btnText, $btnOptions );
     }
@@ -83,9 +90,9 @@ abstract class LiveModal extends LiveModalRoot
      */
     public static function constructContainer( ?string $containerId = null, ?string $template = null, array $paramsWidgetModal = [] ): string
     {
-        $template = $template ?? Yii::$app->params[ self::PARAMS_CONTAINER_TEMPLATE ];
+        $template = $template ?? Yii::$app->params[ static::PARAMS_CONTAINER_TEMPLATE ] ?? static::TEMPLATE_CONTAINER;
 
-        $containerId = $containerId ?? Yii::$app->params[ static::PARAM_CONTAINER_ID ];
+        $containerId = $containerId ?? Yii::$app->params[ static::PARAM_CONTAINER_ID ] ?? static::COMMON_CONTAINER_ID;
 
         return LiveModalService::getContainerHtml( $template, $containerId, $paramsWidgetModal );
     }
@@ -96,7 +103,7 @@ abstract class LiveModal extends LiveModalRoot
      *
      * @return static
      */
-    public static function getInstance(array $params = [], array $options = [] ): static
+    public static function getInstance( array $params = [], array $options = [] ): static
     {
         $className = static::class;
 
@@ -123,7 +130,7 @@ abstract class LiveModal extends LiveModalRoot
 
         $libraryData = $this->getLibraryData( $this->endpoint, $this->containerId );
 
-        $libraryData['request_id'] = $this->requestId;
+        $libraryData[static::URL_REQUEST_KEY] = $this->requestId;
 
         $btnOptions = LiveModalService::constructButtonOptions( $this->requestId, $btnOptions ?? static::BUTTON_OPTIONS );
 
@@ -148,7 +155,7 @@ abstract class LiveModal extends LiveModalRoot
      */
     protected function getRequestData(): array
     {
-        return [ 'request_id' => $this->requestId ];
+        return [ static::URL_REQUEST_KEY => $this->requestId ];
     }
 
     /**
@@ -161,6 +168,6 @@ abstract class LiveModal extends LiveModalRoot
     {
         $template = $template ?? $this->containerTemplate ?? Yii::$app->params[ self::PARAMS_CONTAINER_TEMPLATE ];
 
-        return LiveModalService::getContainerHtml( $template, $this->requestId, $paramsWidgetModal );
+        return LiveModalService::getContainerHtml( $template, $this->containerId, $paramsWidgetModal );
     }
 }
