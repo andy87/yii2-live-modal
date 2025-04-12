@@ -2,6 +2,7 @@
 
 namespace andy87\yii2\live_modal\collection;
 
+use Yii;
 use Exception;
 use andy87\yii2\live_modal\base\LiveModal;
 use andy87\yii2\live_modal\base\LiveModalRoot;
@@ -30,9 +31,9 @@ class LiveModalCollection extends LiveModalRoot
 
         $this->endpoint = $endpoint;
 
-        $this->containerId = $containerId;
+        $this->containerId = $containerId ?? Yii::$app->params[LiveModal::PARAM_CONTAINER_ID] ?? LiveModal::COMMON_CONTAINER_ID;
 
-        $this->containerTemplate = $containerTemplate;
+        $this->containerTemplate = $containerTemplate ?? Yii::$app->params[LiveModal::PARAMS_CONTAINER_TEMPLATE] ?? LiveModal::TEMPLATE_CONTAINER;
     }
 
     /**

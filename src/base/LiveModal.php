@@ -16,10 +16,11 @@ use andy87\yii2\live_modal\service\LiveModalService;
 abstract class LiveModal extends LiveModalRoot
 {
     /** @var string куда вставить контент */
-    protected const PARAM_CONTAINER_ID = 'liveModalCommonContainerId';
-    protected const PARAMS_CONTAINER_TEMPLATE = 'liveModalCommonContainerTemplate';
+    public const PARAM_CONTAINER_ID = 'liveModalCommonContainerId';
+    public const PARAMS_CONTAINER_TEMPLATE = 'liveModalCommonContainerTemplate';
 
     public const TEMPLATE_CONTAINER = '@vendor/andy87/yii2-live-modal/src/views/liveModalViewContainer.php';
+    public const COMMON_CONTAINER_ID = 'liveModalCommonContainerId';
 
 
 
