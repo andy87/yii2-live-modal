@@ -77,6 +77,8 @@ class LiveModalCollection extends LiveModalRoot
             {
                 if ( $request_id === $requestId )
                 {
+                    if ( $className instanceof LiveModal ) return $className;
+                    
                     $containerTemplate = $containerId ?? $liveModalGroup->getContainerId() ?? $this->containerId;
 
                     $endpoint = $endpoint ?? $liveModalGroup->getEndpoint() ?? $this->endpoint;
