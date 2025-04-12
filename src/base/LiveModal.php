@@ -74,9 +74,7 @@ abstract class LiveModal extends LiveModalRoot
 
         $btnOptions = LiveModalService::constructButtonOptions( $requestId, $btnOptions ?? static::BUTTON_OPTIONS );
 
-        $libraryData = LiveModalService::constructLibraryData( $endpoint, $containerId, [ 'request_id' => $requestId ]);
-
-        $libraryData[static::URL_REQUEST_KEY] = $requestId;
+        $libraryData = LiveModalService::constructLibraryData( $endpoint, $containerId, [ static::URL_REQUEST_KEY => $requestId ]);
 
         return LiveModalService::displayButton( $requestId, $libraryData, $btnText, $btnOptions );
     }

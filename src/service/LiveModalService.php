@@ -60,7 +60,7 @@ class LiveModalService
     {
         $library = [
             'endpoint' => $endpoint,
-            'containerId' => $containerId,
+            'container' => $containerId,
         ];
 
         if ($data) $library['data'] = $data;
