@@ -25,7 +25,7 @@ class LiveModalCollection extends LiveModalRoot
      * @param string $containerId
      * @param string $containerTemplate
      */
-    public function __construct( array $listLiveModalGroup, string $endpoint, string $containerId, string $containerTemplate )
+    public function __construct( array $listLiveModalGroup, string $endpoint, ?string $containerId = null, ?string $containerTemplate = null )
     {
         $this->listLiveModalGroup = $listLiveModalGroup;
 
