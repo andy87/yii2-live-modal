@@ -15,8 +15,6 @@ use andy87\yii2\live_modal\service\LiveModalService;
  */
 abstract class LiveModal extends LiveModalRoot
 {
-    protected const URL_REQUEST_KEY = 'request_id';
-
     /** @var string куда вставить контент */
     public const PARAM_CONTAINER_ID = 'liveModalCommonContainerId';
     public const PARAMS_CONTAINER_TEMPLATE = 'liveModalCommonContainerTemplate';
@@ -24,7 +22,10 @@ abstract class LiveModal extends LiveModalRoot
     public const TEMPLATE_CONTAINER = '@vendor/andy87/yii2-live-modal/src/views/liveModalViewContainer.php';
     public const COMMON_CONTAINER_ID = 'liveModalCommonContainerId';
 
+    public const COMMON_CONTAINER_CLASS = 'liveModalElement';
 
+
+    protected const URL_REQUEST_KEY = 'request_id';
 
     /** @var string */
     protected const BUTTON_OPTIONS = [
