@@ -1,52 +1,86 @@
 
+if ( window.liveModalLibraryData === undefined ) window.liveModalLibraryData = {};
+if ( window.liveModalLibraryHandlers === undefined ) window.liveModalLibraryHandlers = {};
 /**
  * yii2\frontend\assets\blocks::LiveDataModalAsset()
  */
 const LiveModalLibraryData = window.liveModalLibraryData || {
-    action : {
+    requestId : {
         request_id :"modalContainerView",
         container :"modalContainerView",
         endpoint : " /api/modal/get-html-view",
         id : null,
-        model : "design",
+        model : "design",   
         type :  "view"
     }
 };
+
 const LiveModalLibraryHandlers = window.liveModalLibraryHandlers || {};
 
+const liveModal = {
 
-window.addEventListener('load',function ()
-{
-    const cache = new Map();
+    selector : 'data-live-modal',
 
-    const selector = 'data-live-modal';
+    cache : null,
 
-    $(`[${selector}]`).on('click', function(e)
+    init : function (selector){
+
+        window.addEventListener('load',function ()
+        {
+            liveModal.cache = new Map();
+
+            liveModal.bind(selector);
+        });
+    },
+
+    bind : function (selector)
     {
-        e.preventDefault();
-        e.stopPropagation();
+        $(`[${selector}]`).on('click', function(e)
+        {
+            e.preventDefault();
+            e.stopPropagation();
 
-        let key = $(this).attr(`${selector}`);
+            let key = $(this).attr(`${selector}`);
 
-        const modal = LiveModalLibraryData[ key ];
+            const modal = LiveModalLibraryData[ key ];
 
-        let renderModal = function (container, response ){
-            const modalWrapperElement = $(`#${container}`);
+            liveModal.query(modal);
+        });
+    },
+
+    renderModal : function(modal, response)
+    {
+        let container = (modal.container !== undefined && modal.container !== null) ? modal.container : null;
+
+        if (container)
+        {
+            let modalWrapperElement = $(`#${container}`);
 
             modalWrapperElement.find('.modal-body').html(response);
 
+            if (modal.title !== undefined ) modalWrapperElement.find('.modal-title').text(modal.title);
+
             modalWrapperElement.modal('show');
+
+        } else {
+            console.error('Modal container not defined.');
         }
+    },
 
+    query : function (modal)
+    {
         let handler = LiveModalLibraryHandlers[modal.request_id] ?? null;
+        let key = `${modal.endpoint} ${modal.method} ${modal.data}`;
+        let cacheStatus = modal.cache !== undefined && modal.cache === true;
+        let container = ( modal.container !== undefined && modal.container !== null ) ? modal.container : null;
 
-        if ( modal.cache !== undefined && !handler )
+        if ( cacheStatus )
         {
-            key = `${modal.endpoint} ${modal.method} ${modal.data}`;
-
-            if (cache.has(key) ) {
-                if (modal.container !== null) {
-                    renderModal(modal.container, cache.get(key));
+            if ( !handler && liveModal.cache.has(key) )
+            {
+                if (container)
+                {
+                    liveModal.renderModal( modal, liveModal.cache.get(key) );
                 }
                 return;
             }
@@ -63,9 +97,9 @@ window.addEventListener('load',function ()
                 {
                     handler(response);
 
-                } else if (modal.container !== null) {
+                } else if (container) {
 
-                    renderModal(modal.container, response);
+                    liveModal.renderModal(modal, response);
                 }
             },
             error : function(response)
@@ -74,8 +108,10 @@ window.addEventListener('load',function ()
             }
         };
 
-        console.log(AJAX);
+        $.ajax(AJAX).then(response => {
+            if ( cacheStatus ) liveModal.cache.set(key, response);
+        });
+    }
+};
 
-        $.ajax(AJAX).then(response => cache.set(key, response));
-    });
-});
+liveModal.init(liveModal.selector);
